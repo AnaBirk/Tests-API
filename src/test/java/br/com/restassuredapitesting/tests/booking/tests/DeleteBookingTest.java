@@ -17,5 +17,4 @@ public class DeleteBookingTest {
                .delete("booking"+ id);
     }
 
-
 }

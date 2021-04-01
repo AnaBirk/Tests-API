@@ -16,4 +16,5 @@ import org.junit.runners.Suite;
         BaseTest.class
 })
 public class AllTests {
+    //Posso colocar meus runnes aqui?
 }

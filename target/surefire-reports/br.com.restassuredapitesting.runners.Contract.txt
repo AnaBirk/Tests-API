@@ -1,0 +1,32 @@
+-------------------------------------------------------------------------------
+Test set: br.com.restassuredapitesting.runners.Contract
+-------------------------------------------------------------------------------
+Tests run: 2, Failures: 1, Errors: 0, Skipped: 0, Time elapsed: 6.884 s <<< FAILURE! - in br.com.restassuredapitesting.runners.Contract
+garantirContratoReservaEspecifica(br.com.restassuredapitesting.tests.booking.tests.GetBookignTest)  Time elapsed: 1.222 s  <<< FAILURE!
+java.lang.AssertionError: 
+1 expectation failed.
+Response body doesn't match expectation.
+Expected: The content to match the given JSON schema.
+warning: the following keywords are unknown and will be ignored: [$id, examples]
+    level: "warning"
+    schema: {"loadingURI":"#","pointer":""}
+    domain: "syntax"
+    ignored: ["$id","examples"]
+warning: the following keywords are unknown and will be ignored: [$id, examples]
+    level: "warning"
+    schema: {"loadingURI":"#","pointer":"/properties/bookingid"}
+    domain: "syntax"
+    ignored: ["$id","examples"]
+error: object has missing required properties (["bookingid"])
+    level: "error"
+    schema: {"loadingURI":"#","pointer":""}
+    instance: {"pointer":""}
+    domain: "validation"
+    keyword: "required"
+    required: ["bookingid"]
+    missing: ["bookingid"]
+
+  Actual: {"firstname":"Mary","lastname":"Smith","totalprice":388,"depositpaid":true,"bookingdates":{"checkin":"2017-03-31","checkout":"2020-08-24"}}
+
+	at br.com.restassuredapitesting.tests.booking.tests.GetBookignTest.garantirContratoReservaEspecifica(GetBookignTest.java:69)
+

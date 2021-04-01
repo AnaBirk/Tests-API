@@ -29,4 +29,22 @@ public class PostAuthRequest {
         return "token= "+ this.token().then().statusCode(200).extract().path("token"); //Autenticação
     }
 
+    @Step("Buscar o Basic")
+    public Response basic(){
+        JSONObject payload = new JSONObject();
+        payload.put("username", "admin");
+        payload.put("password", "password123");
+
+        return given()
+                .header("Content-Type", "application/json")
+                .when()
+                .body(payload.toString())
+                .post("auth");
+    }
+
+    @Step("Retornar o Basic")
+    public Response getBasic(){
+        return this.basic().then().statusCode(200).extract().path("basic");
+    }
+
 }

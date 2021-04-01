@@ -37,7 +37,26 @@ public class PutBookingTest extends BaseTest {
          putBookingnRequest.alterarUmaReservaComToken(primeiroId, Utils.validPayloadBooking()).then()
                 .statusCode(200)
                 .time(lessThan(3L), TimeUnit.SECONDS)
-            .body("size()", greaterThan(0));
-}
+                .body("size()", greaterThan(0));
+    }
+
+/*
+    @Test
+    @Severity(SeverityLevel.NORMAL)
+    @Category(Acceptance.class)
+    @DisplayName("Alterar uma reserva utilizando o basic")
+    public void validadeAlterarUmaReservaUtilizandoBasic() throws Exception {
+        //Preciso passar um Id pro nosso put, só que preciso pegar esse Id do meu Get
+        int primeiroId = getBookingRequest.allBookings().then().statusCode(200).extract().path("[0].bookingid");
+
+        System.out.println(primeiroId);
+
+        putBookingnRequest.(primeiroId, Utils.validPayloadBooking().then()
+                .statusCode(200)
+                .time(lessThan(3L), TimeUnit.SECONDS)
+                .body("size()", greaterThan(0));
+    }
+*/
+
 
 }
