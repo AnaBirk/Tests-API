@@ -1,0 +1,11 @@
+-------------------------------------------------------------------------------
+Test set: br.com.restassuredapitesting.runners.Healthcheck
+-------------------------------------------------------------------------------
+Tests run: 1, Failures: 1, Errors: 0, Skipped: 0, Time elapsed: 5.273 s <<< FAILURE! - in br.com.restassuredapitesting.runners.Healthcheck
+verificarAPI(br.com.restassuredapitesting.tests.ping.tests.GetPingTests)  Time elapsed: 4.14 s  <<< FAILURE!
+java.lang.AssertionError: 
+1 expectation failed.
+Expected status code <200> but was <201>.
+
+	at br.com.restassuredapitesting.tests.ping.tests.GetPingTests.verificarAPI(GetPingTests.java:26)
+
