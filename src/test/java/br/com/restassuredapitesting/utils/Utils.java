@@ -15,7 +15,6 @@ public class Utils {
     }
 
     public static JSONObject validPayloadBooking(){
-        //Esse é o Body do
         JSONObject payload = new JSONObject();
         JSONObject bookingDates = new JSONObject();
 

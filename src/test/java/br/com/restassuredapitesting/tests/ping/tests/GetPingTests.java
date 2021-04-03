@@ -18,15 +18,12 @@ public class GetPingTests extends BaseTest {
     GetPingRequests getPingRequests = new GetPingRequests();
 
     @Test
-    @Severity(SeverityLevel.BLOCKER)
+    @Severity(SeverityLevel.NORMAL)
     @Category(Healthcheck.class)
     @DisplayName("Verificar se API está online")
     public void verificarAPI() throws Exception{
-        getPingRequests.helthPing().then()
+        getPingRequests.healthyPing().then()
                 .statusCode(200)
-                .time(lessThan(3L), TimeUnit.SECONDS);
-
-        //Erro na documentação, retorna 201, mas deveria retornar 200
+                .time(lessThan(2L), TimeUnit.SECONDS); //Erro na documentação, retorna 201, mas deveria retornar 200
     }
-
 }

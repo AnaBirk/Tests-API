@@ -29,6 +29,9 @@
         "checkin",
         "checkout"
       ],
+      "additionalneeds": {
+        "type": "string"
+      },
       "properties": {
         "checkin": {
           "type": "string"
@@ -37,9 +40,6 @@
           "type": "string"
         }
       }
-    },
-    "additionalneeds": {
-      "type": "string"
     }
   }
 }

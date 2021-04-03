@@ -9,8 +9,8 @@ import static io.restassured.RestAssured.given;
 
 public class GetPingRequests {
 
-    @Step("Buscar o Ping")
-    public Response helthPing(){
+    @Step("#")
+    public Response healthyPing(){
         return given()
                 .get("ping");
     }
