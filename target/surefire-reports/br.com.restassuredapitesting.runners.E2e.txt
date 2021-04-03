@@ -1,0 +1,7 @@
+-------------------------------------------------------------------------------
+Test set: br.com.restassuredapitesting.runners.E2e
+-------------------------------------------------------------------------------
+Tests run: 1, Failures: 0, Errors: 1, Skipped: 0, Time elapsed: 0.578 s <<< FAILURE! - in br.com.restassuredapitesting.runners.E2e
+initializationError(br.com.restassuredapitesting.runners.E2e)  Time elapsed: 0.372 s  <<< ERROR!
+org.junit.runner.manipulation.NoTestsRemainException
+

@@ -44,14 +44,26 @@ public class PutBookingTest extends BaseTest {
     @Test
     @Severity(SeverityLevel.NORMAL)
     @Category(Acceptance.class)
+    @DisplayName("Alterar uma reserva usando o Basic auth ")
+    public void validaAlterarUmaReservaUtilizandoBasic() throws Exception {
+        //Preciso passar um Id pro nosso put, só que preciso pegar esse Id do meu Get
+        int getId = getBookingRequest.allBookings().then().statusCode(200).extract().path("[6].bookingid");
+
+        putBookingnRequest.alterarUmaReservaComBasic(getId, Utils.validPayloadBooking()).then()
+                .statusCode(200)
+                .time(lessThan(2L), TimeUnit.SECONDS)
+                .body("size()", greaterThan(0));
+    }
+
+    @Test
+    @Severity(SeverityLevel.NORMAL)
+    @Category(E2e.class)
     @DisplayName("Tentar alterar uma reserva que não existe")
     public void ReservaNaoExistente() throws Exception {
-        //Preciso passar um Id pro nosso put, só que preciso pegar esse Id do meu Get
-        //int primeiroId = getBookingRequest.allBookings().then().statusCode(200).extract().path();
         putBookingnRequest.alterarUmaReservaComToken(100, Utils.validPayloadBooking()).then()
                 .statusCode(200)
                 .time(lessThan(3L), TimeUnit.SECONDS)
-                .body("size()", greaterThan(0));
+                .body("size()", greaterThan(0)); //ERRO 405
     }
 
     @Test
@@ -59,9 +71,9 @@ public class PutBookingTest extends BaseTest {
     @Category(E2e.class)
     @DisplayName("Tentar alterar uma reserva quando o token não for enviado")
     public void alterarReservaSemToken() throws Exception{
-        int primeiroId = getBookingRequest.allBookings().then().statusCode(200).extract().path("[0].bookingid");
+        int getIdReserva = getBookingRequest.allBookings().then().statusCode(200).extract().path("[5].bookingid");
 
-        putBookingnRequest.alterarReservaSemToken(primeiroId, Utils.validPayloadBooking()).then()
+        putBookingnRequest.alterarReservaSemToken(getIdReserva, Utils.validPayloadBooking()).then()
                 .statusCode(200)
                 .time(lessThan(3L), TimeUnit.SECONDS)
                 .body("size()", greaterThan(0)); //HTTP/1.1 403 Forbidden
@@ -72,33 +84,12 @@ public class PutBookingTest extends BaseTest {
     @Category(E2e.class)
     @DisplayName("Tentar alterar uma reserva quando o token enviado for inválido")
     public void alterarReservaComTokenInvalido() throws Exception{
-        int primeiroId = getBookingRequest.allBookings().then().statusCode(200).extract().path("[0].bookingid");
+        int getIdReserva = getBookingRequest.allBookings().then().statusCode(200).extract().path("[8].bookingid");
 
-        putBookingnRequest.alterarReservaComTokenInvalido(primeiroId, Utils.validPayloadBooking()).then()
+        putBookingnRequest.alterarReservaComTokenInvalido(getIdReserva, Utils.validPayloadBooking()).then()
                 .statusCode(200)
                 .time(lessThan(3L), TimeUnit.SECONDS)
-                .body("size()", greaterThan(0)); //HTTP/1.1 403 Forbidden*/
+                .body("size()", greaterThan(0)); //403 Forbidden
     }
-
-
-
-    /*
-    @Test
-    @Severity(SeverityLevel.NORMAL)
-    @Category(Acceptance.class)
-    @DisplayName("Alterar uma reserva utilizando o basic")
-    public void validadeAlterarUmaReservaUtilizandoBasic() throws Exception {
-        //Preciso passar um Id pro nosso put, só que preciso pegar esse Id do meu Get
-        int primeiroId = getBookingRequest.allBookings().then().statusCode(200).extract().path("[0].bookingid");
-
-        System.out.println(primeiroId);
-
-        putBookingnRequest.(primeiroId, Utils.validPayloadBooking().then()
-                .statusCode(200)
-                .time(lessThan(3L), TimeUnit.SECONDS)
-                .body("size()", greaterThan(0));
-    }
-*/
-
 
 }

@@ -30,4 +30,25 @@ public class Utils {
 
         return payload;
     }
+
+    public static JSONObject payloadBookingWithMoreParameters(){
+        JSONObject payload = new JSONObject();
+        JSONObject bookingDates = new JSONObject();
+
+        bookingDates.put("checkin",  "2013-02-23");
+        bookingDates.put("checkout", "2014-10-23" );
+
+        payload.put("firstname", "Sally");
+        payload.put("lastname", "Brown");
+        payload.put("totalprice", 111);
+        payload.put("depositpaid", true);
+        payload.put("bookingdates", bookingDates);
+        payload.put("additionalneeds", "Breakfast");
+        payload.put("additionalneeds", "Baby crib");
+        payload.put("freeCancellation", false);
+
+        return payload;
+
+
+    }
 }

@@ -7,10 +7,10 @@ import br.com.restassuredapitesting.tests.booking.requests.PostBookingRequest;
 import io.qameta.allure.Severity;
 import io.qameta.allure.SeverityLevel;
 import io.qameta.allure.junit4.DisplayName;
-import io.restassured.response.Response;
 import org.junit.Test;
 import org.junit.experimental.categories.Category;
-import static org.hamcrest.CoreMatchers.equalTo;
+
+import javax.xml.ws.Response;
 
 
 public class PostBookingTest extends BaseTest {
@@ -38,20 +38,37 @@ public class PostBookingTest extends BaseTest {
                 .statusCode(500);
     }
 
-    //Validar mais de um livro em sequência
+    @Test
+    @Severity(SeverityLevel.NORMAL)
+    @Category(E2e.class)
+    @DisplayName("Validar a criação de uma reserva em sequência")
+    public void testCreatBookings(){
+        postBookingRequest.payloadInvalido()
+                .then()
+                .assertThat()
+                .statusCode(500);
+    }
 
-    //Criar uma reserva enviando mais parâmetros no payload da reserva
+    @Test
+    @Severity(SeverityLevel.NORMAL)
+    @Category(E2e.class)
+    @DisplayName("Criar uma reserva enviando mais parâmetros no payload da reserva")
+    public void criarReservaComMaisParametros(){
+        postBookingRequest.reservaComMaisParametos()
+                .then()
+                .assertThat()
+                .statusCode(200);
+    }
 
     @Test
     @Severity(SeverityLevel.NORMAL)
     @Category(E2e.class)
     @DisplayName("Validar retorno 418 quando o header Accept for invalido")
-    public void validarErro(){
+    public void testValidateTeapot(){
         postBookingRequest.headerAcceptInvalido()
                 .then()
                 .assertThat()
-                .statusCode(418);
+                .statusCode(418); //obs: adorei o código de erro 418 " I'm a teapot"
     }
-
 }
 

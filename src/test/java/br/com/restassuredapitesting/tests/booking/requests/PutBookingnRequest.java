@@ -21,7 +21,17 @@ public class PutBookingnRequest {
                 .when()
                 .body(payload.toString())
                 .put("booking/" + id);
-        
+
+    }
+
+    @Step("")
+    public Response alterarUmaReservaComBasic(int id, JSONObject payload){
+        return given()
+                .header("Content-Type", "application/json")
+                .header("Authorization", "Basic YWRtaW46cGFzc3dvcmQxMjM=")
+                .when()
+                .body(payload.toString())
+                .put("booking/" + id);
     }
 
     @Step("Alterar reserva sem Token")
