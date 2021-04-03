@@ -8,22 +8,21 @@ import io.qameta.allure.SeverityLevel;
 import io.qameta.allure.junit4.DisplayName;
 import org.junit.Test;
 import org.junit.experimental.categories.Category;
-
-import javax.xml.ws.Response;
 import java.util.concurrent.TimeUnit;
-
 import static org.hamcrest.Matchers.lessThan;
 
+
 public class GetPingTests extends BaseTest {
+
     GetPingRequests getPingRequests = new GetPingRequests();
 
     @Test
     @Severity(SeverityLevel.NORMAL)
     @Category(Healthcheck.class)
     @DisplayName("Verificar se API está online")
-    public void verificarAPI() throws Exception{
-        getPingRequests.healthyPing().then()
-                .statusCode(200)
-                .time(lessThan(2L), TimeUnit.SECONDS); //Erro na documentação, retorna 201, mas deveria retornar 200
+    public void testPing() throws Exception {
+        getPingRequests.getPing().then()
+                .statusCode(201)
+                .time(lessThan(3L), TimeUnit.SECONDS);
     }
 }

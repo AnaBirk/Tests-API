@@ -18,24 +18,54 @@ import static io.restassured.module.jsv.JsonSchemaValidator.matchesJsonSchema;
 import static org.hamcrest.Matchers.greaterThan;
 import static org.hamcrest.Matchers.lessThan;
 
+
 @Feature("Reservas")
 public class GetBookignTest extends BaseTest {
-    //Criar um novo objeto de requisição
+
     GetBookingRequest getBookingRequest = new GetBookingRequest();
+
+    @Test
+    @Severity(SeverityLevel.NORMAL)
+    @Category(Contract.class)
+    @DisplayName("Garantir o contrato do retorno da lista de reservas")
+    public void ensureAllBookingsContract() throws Exception{
+        getBookingRequest.allBookings().then().log().all()
+                .statusCode(200)
+                .assertThat()
+                .body(
+                        matchesJsonSchema(
+                                new File(
+                                        Utils.getContractsBasePath("booking", "bookings")
+                                )
+                        )
+                );
+    }
+
+    @Test
+    @Severity(SeverityLevel.NORMAL)
+    @Category(Contract.class)
+    @DisplayName("Garantir o contrato do retorno de uma reserva específica")
+    public void ensureOneBookingContract() throws Exception{
+        getBookingRequest.getOneBooking("2").then().log().all()
+                .statusCode(200)
+                .assertThat()
+                .body(
+                        matchesJsonSchema(
+                                new File(
+                                        Utils.getContractsBasePath("booking", "bookingId")
+                                )
+                        )
+                );
+    }
 
     @Test
     @Severity(SeverityLevel.NORMAL)
     @Category(Acceptance.class)
     @DisplayName("Listar IDs das Reservas")
-
-    public void validarIdsDasReservas() throws Exception {
+    public void allBookingsList() throws Exception {
         getBookingRequest.allBookings().then().log().all()
-                //listar ids das reservas - validar o statusCode
                 .statusCode(200)
-                //Depois de verificar se o statusCode é 200 ele verifica se o tempo é menor que 3s
                 .time(lessThan(3L), TimeUnit.SECONDS)
-                //Se o tempo for menor que 3s vamos verificar no retorno, o corpo da requisição
-                //O tamanho tem que ser maior que 0
                 .body("size()", greaterThan(0));
     }
 
@@ -43,8 +73,8 @@ public class GetBookignTest extends BaseTest {
     @Severity(SeverityLevel.NORMAL)
     @Category(Acceptance.class)
     @DisplayName("Listar uma reserva especifica")
-    public void validarIdEspecifico() throws Exception {
-        getBookingRequest.reservaEspecifica("5").then().log().all()
+    public void getOneBooking() throws Exception {
+        getBookingRequest.getOneBooking("5").then().log().all()
                 .statusCode(200)
                 .time(lessThan(3L), TimeUnit.SECONDS)
                 .body("size()", greaterThan(0));
@@ -54,8 +84,8 @@ public class GetBookignTest extends BaseTest {
     @Severity(SeverityLevel.NORMAL)
     @Category(Acceptance.class)
     @DisplayName("Listar IDs de reservas utilizando o filtro firstname")
-    public void validarIdsComFristName() throws Exception{
-       getBookingRequest.allBookingsUsingFirstName("Sally").then().log().all()
+    public void getBookingsByFirstnameFilter() throws Exception{
+       getBookingRequest.firstNameFilter("Sally").then().log().all()
                .statusCode(200)
                .time(lessThan(3L), TimeUnit.SECONDS)
                .body("size()", greaterThan(0));
@@ -65,8 +95,8 @@ public class GetBookignTest extends BaseTest {
     @Severity(SeverityLevel.NORMAL)
     @Category(Acceptance.class)
     @DisplayName("Listar IDs de reservas utilizando o filtro lastname")
-    public void validarIdsComLastname() throws Exception{
-        getBookingRequest.allBookingsUsingLastname("Brown").then().log().all()
+    public void getBookingsByLastnameFilter() throws Exception{
+        getBookingRequest.lastnameFilter("Brown").then().log().all()
                 .statusCode(200)
                 .time(lessThan(3L), TimeUnit.SECONDS)
                 .body("size()", greaterThan(0));
@@ -77,8 +107,8 @@ public class GetBookignTest extends BaseTest {
     @Category(Acceptance.class)
     @DisplayName("Listar IDs de reservas utilizando o filtro checkin")
 
-    public void validarIdsDasReservasUsandoCheckinDate() throws Exception{
-        getBookingRequest.allBookingsFilterByCheckin("2013-02-23").then()
+    public void getBookingsByCheckinDateFilter() throws Exception{
+        getBookingRequest.CheckinFilter("2013-02-23").then()
                .statusCode(200)
                .time(lessThan(3L), TimeUnit.SECONDS)
                .body("size()", greaterThan(0)); //ERRO 500
@@ -88,8 +118,8 @@ public class GetBookignTest extends BaseTest {
     @Severity(SeverityLevel.NORMAL)
     @Category(Acceptance.class)
     @DisplayName("Listar IDs de reservas utilizando o filtro checkout")
-    public void validarIdsDasReservasUsandoCheckoutDate() throws Exception{
-        getBookingRequest.allBookingsUsingCheckout("2014-10-23").then()
+    public void getBookingsByCheckoutDateFilter() throws Exception{
+        getBookingRequest.checkoutFilter("2014-10-23").then()
                 .statusCode(200)
                 .time(lessThan(3L), TimeUnit.SECONDS)
                 .body("size()", greaterThan(0)); //ERRO 500
@@ -100,8 +130,8 @@ public class GetBookignTest extends BaseTest {
     @Category(Acceptance.class)
     @DisplayName("Listar IDs de reservas utilizando o filtro checkout and checkout")
 
-    public void validarIdsDasReservasUsandoCheckoutAndCheckout() throws Exception{
-        getBookingRequest.allBookingsFilterByCheckoutAndCheckout("2014-10-23").then()
+    public void getBookingsByCheckoutAndCheckoutFilter() throws Exception{
+        getBookingRequest.checkoutAndCheckoutFilter("2014-10-23").then()
                 .statusCode(200)
                 .time(lessThan(3L), TimeUnit.SECONDS)
                 .body("size()", greaterThan(0)); //JSON path size() doesn't match.
@@ -111,57 +141,20 @@ public class GetBookignTest extends BaseTest {
     @Severity(SeverityLevel.NORMAL)
     @Category(Acceptance.class)
     @DisplayName("Listar IDs de reservas utilizando o filtro  name, checkin and checkout date")
-    public void validarIdsDasReservasUsandoCheckoutCheckinAndName() throws Exception{
-        getBookingRequest.allBookingsFilterByNameAndCheckinAndCheckout("Sally", "Brown", "2013-02-23", "2014-10-23" ).then()
+    public void getBookingsByNameCheckinAndCheckoutFilter() throws Exception{
+        getBookingRequest. nameCheckinAndCheckoutFilter("Sally", "Brown", "2013-02-23", "2014-10-23" ).then()
                 .statusCode(200)
-                .time(lessThan(3L), TimeUnit.SECONDS)
-                .body("size()", greaterThan(0)); //JSON path size() doesn't match.
-        // Expected: a value greater than <0>
-        // Actual: 0
+                .time(lessThan(3L), TimeUnit.SECONDS);
     }
 
     @Test
     @Severity(SeverityLevel.NORMAL)
     @Category(E2e.class)
     @DisplayName("Visualizar erro de servidor 500 quando enviar filtro mal formatado")
-    public void visualizerErroComFiltroMalInformado() throws Exception {
-        getBookingRequest.allBookingsUsingCheckout("filtro").then()
+    public void viewErrorByMisinformedFilter() throws Exception {
+        getBookingRequest.checkoutFilter("filtro").then()
                 .statusCode(200)
                 .time(lessThan(3L), TimeUnit.SECONDS)
                 .body("size()", greaterThan(0)); //Erro 500
-    }
-
-    @Test
-    @Severity(SeverityLevel.BLOCKER)
-    @Category(Contract.class) // é a nossa interface dentro de suíte
-    @DisplayName("Garantir o contrato do retorno da lista de reservas")
-    public void garantirContratoListaReserva() throws Exception{
-        getBookingRequest.allBookings().then().log().all()
-                .statusCode(200)//é 200, se for:
-                .assertThat()//faz um assert disso
-                .body(
-                    matchesJsonSchema(
-                            new File(
-                                    Utils.getContractsBasePath("booking", "bookings")
-                            )
-                    )
-                );
-    }
-
-    @Test
-    @Severity(SeverityLevel.BLOCKER)
-    @Category(Contract.class)
-    @DisplayName("Garantir o contrato do retorno de uma reserva específica")
-    public void garantirContratoReservaEspecifica() throws Exception{
-        getBookingRequest.reservaEspecifica("2").then().log().all()
-                .statusCode(200)
-                .assertThat()
-                .body(
-                        matchesJsonSchema(
-                                new File(
-                                        Utils.getContractsBasePath("booking", "bookingMarkJackson")
-                                )
-                        )
-                );
     }
 }

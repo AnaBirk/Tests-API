@@ -17,11 +17,9 @@ import static org.hamcrest.Matchers.greaterThan;
 import static org.hamcrest.Matchers.lessThan;
 
 
-
 @Feature("Reservas")
 public class PutBookingTest extends BaseTest {
 
-    //Para alterar, eu preciso de um Id, a unica listagem de ids é Get. Então precisa iniciar o getBookingRequest
     PutBookingnRequest putBookingnRequest= new PutBookingnRequest();
     GetBookingRequest getBookingRequest = new GetBookingRequest();
 
@@ -29,13 +27,9 @@ public class PutBookingTest extends BaseTest {
     @Severity(SeverityLevel.NORMAL)
     @Category(Acceptance.class)
     @DisplayName("Alterar uma reserva utilizando token")
-    public void validadeAlterarUmaReservaUtilizandoToken() throws Exception {
-        //Preciso passar um Id pro nosso put, só que preciso pegar esse Id do meu Get
-        int primeiroId = getBookingRequest.allBookings().then().statusCode(200).extract().path("[0].bookingid");
-
-        System.out.println(primeiroId);
-
-         putBookingnRequest.alterarUmaReservaComToken(primeiroId, Utils.validPayloadBooking()).then()
+    public void updateBookingByToken() throws Exception {
+        int getId = getBookingRequest.allBookings().then().statusCode(200).extract().path("[1].bookingid");
+         putBookingnRequest.updateBookingToken(getId, Utils.validPayloadBooking()).then()
                 .statusCode(200)
                 .time(lessThan(3L), TimeUnit.SECONDS)
                 .body("size()", greaterThan(0));
@@ -44,12 +38,10 @@ public class PutBookingTest extends BaseTest {
     @Test
     @Severity(SeverityLevel.NORMAL)
     @Category(Acceptance.class)
-    @DisplayName("Alterar uma reserva usando o Basic auth ")
-    public void validaAlterarUmaReservaUtilizandoBasic() throws Exception {
-        //Preciso passar um Id pro nosso put, só que preciso pegar esse Id do meu Get
+    @DisplayName("Alterar uma reserva usando o Basic auth")
+    public void updateBookingByBasic() throws Exception {
         int getId = getBookingRequest.allBookings().then().statusCode(200).extract().path("[6].bookingid");
-
-        putBookingnRequest.alterarUmaReservaComBasic(getId, Utils.validPayloadBooking()).then()
+        putBookingnRequest.updateBookingBasic(getId, Utils.validPayloadBooking()).then()
                 .statusCode(200)
                 .time(lessThan(2L), TimeUnit.SECONDS)
                 .body("size()", greaterThan(0));
@@ -60,7 +52,7 @@ public class PutBookingTest extends BaseTest {
     @Category(E2e.class)
     @DisplayName("Tentar alterar uma reserva que não existe")
     public void ReservaNaoExistente() throws Exception {
-        putBookingnRequest.alterarUmaReservaComToken(100, Utils.validPayloadBooking()).then()
+        putBookingnRequest.updateBookingToken(100, Utils.validPayloadBooking()).then()
                 .statusCode(200)
                 .time(lessThan(3L), TimeUnit.SECONDS)
                 .body("size()", greaterThan(0)); //ERRO 405
@@ -70,13 +62,13 @@ public class PutBookingTest extends BaseTest {
     @Severity(SeverityLevel.NORMAL)
     @Category(E2e.class)
     @DisplayName("Tentar alterar uma reserva quando o token não for enviado")
-    public void alterarReservaSemToken() throws Exception{
+    public void updateBookingWithoutToken() throws Exception{
         int getIdReserva = getBookingRequest.allBookings().then().statusCode(200).extract().path("[5].bookingid");
 
         putBookingnRequest.alterarReservaSemToken(getIdReserva, Utils.validPayloadBooking()).then()
                 .statusCode(200)
                 .time(lessThan(3L), TimeUnit.SECONDS)
-                .body("size()", greaterThan(0)); //HTTP/1.1 403 Forbidden
+                .body("size()", greaterThan(0)); //ERRO 403 Forbidden
     }
 
     @Test
@@ -89,7 +81,6 @@ public class PutBookingTest extends BaseTest {
         putBookingnRequest.alterarReservaComTokenInvalido(getIdReserva, Utils.validPayloadBooking()).then()
                 .statusCode(200)
                 .time(lessThan(3L), TimeUnit.SECONDS)
-                .body("size()", greaterThan(0)); //403 Forbidden
+                .body("size()", greaterThan(0)); //ERRO 403 Forbidden
     }
-
 }

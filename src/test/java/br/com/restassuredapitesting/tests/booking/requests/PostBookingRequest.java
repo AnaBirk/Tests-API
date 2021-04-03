@@ -8,7 +8,7 @@ import static io.restassured.RestAssured.given;
 
 public class PostBookingRequest {
 
-    @Step("Criar uma reserva")
+    @Step("Request para criar reserva")
     public static Response criarReserva(){
         return given()
                 .header("Content-Type", "application/json")
@@ -18,18 +18,15 @@ public class PostBookingRequest {
     }
 
     @Step("Request de Post sem Body")
-    public static Response payloadInvalido(){
+    public static Response invalidPayload(){
         return given()
                 .header("Content-Type", "application/json")
                 .when()
                 .post("booking");
     }
 
-
-    //Validar a criação de mais de um livro em sequência
-    //Criar uma reserva enviando mais parâmetros no payload da reserva
     @Step("Criar uma reserva com mais parametros")
-    public static Response reservaComMaisParametos(){
+    public static Response additionalBookingParameters(){
         return given()
                 .header("Content-Type", "application/json")
                 .body(Utils.payloadBookingWithMoreParameters())
@@ -37,11 +34,8 @@ public class PostBookingRequest {
                 .post("booking");
     }
 
-
-
-
-    @Step("header Accept invalido")
-    public static Response headerAcceptInvalido(){
+    @Step("header Accept inválido")
+    public static Response invalidHeaderAccept(){
         return given()
                 .header("Content-Type", "application/json")
                 .header("Accept", "application/oog")

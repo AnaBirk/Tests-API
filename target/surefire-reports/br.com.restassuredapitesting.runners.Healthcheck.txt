@@ -1,0 +1,10 @@
+-------------------------------------------------------------------------------
+Test set: br.com.restassuredapitesting.runners.Healthcheck
+-------------------------------------------------------------------------------
+Tests run: 1, Failures: 1, Errors: 0, Skipped: 0, Time elapsed: 8.271 s <<< FAILURE! - in br.com.restassuredapitesting.runners.Healthcheck
+testPing(br.com.restassuredapitesting.tests.ping.tests.GetPingTests)  Time elapsed: 5.761 s  <<< FAILURE!
+java.lang.AssertionError: 
+1 expectation failed.
+Expected response time was not a value less than <3L> seconds, was 3166 milliseconds (3 seconds).
+	at br.com.restassuredapitesting.tests.ping.tests.GetPingTests.testPing(GetPingTests.java:26)
+

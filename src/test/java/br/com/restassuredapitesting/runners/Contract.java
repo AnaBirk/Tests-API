@@ -7,6 +7,7 @@ import org.junit.experimental.categories.Categories;
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
 
+
 @RunWith(Categories.class)
 @Categories.IncludeCategory(br.com.restassuredapitesting.suites.Contract.class)
 @Suite.SuiteClasses({
@@ -14,5 +15,6 @@ import org.junit.runners.Suite;
         PutBookingTest.class,
         PostAuthTest.class
 })
+
 public class Contract {
 }

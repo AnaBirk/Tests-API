@@ -4,16 +4,15 @@ import br.com.restassuredapitesting.tests.auth.requests.PostAuthRequest;
 import io.qameta.allure.Step;
 import io.restassured.response.Response;
 import org.json.simple.JSONObject;
-
 import static io.restassured.RestAssured.given;
+
 
 public class PutBookingnRequest {
 
     PostAuthRequest postAuthRequest = new PostAuthRequest();
 
-    @Step("Alterar uma reserva com token")
-    public Response alterarUmaReservaComToken(int id, JSONObject payload){
-
+    @Step("Requisição para alterar uma reserva com token")
+    public Response updateBookingToken(int id, JSONObject payload){
         return given()
                 .header("Content-Type", "application/json")
                 .header("Accept", "application/json")
@@ -21,11 +20,10 @@ public class PutBookingnRequest {
                 .when()
                 .body(payload.toString())
                 .put("booking/" + id);
-
     }
 
-    @Step("")
-    public Response alterarUmaReservaComBasic(int id, JSONObject payload){
+    @Step("Requisição para alterar uma reserva com Basic")
+    public Response updateBookingBasic(int id, JSONObject payload){
         return given()
                 .header("Content-Type", "application/json")
                 .header("Authorization", "Basic YWRtaW46cGFzc3dvcmQxMjM=")
@@ -34,7 +32,7 @@ public class PutBookingnRequest {
                 .put("booking/" + id);
     }
 
-    @Step("Alterar reserva sem Token")
+    @Step("Reserva sem Token")
     public Response alterarReservaSemToken(int id, JSONObject payload){
         return given()
                 .header("Content-Type", "application/json")
@@ -44,7 +42,7 @@ public class PutBookingnRequest {
                 .put("booking/" + id);
     }
 
-    @Step("Alterar reserva com o Token inválido")
+    @Step("Reserva com o Token inválido")
     public Response alterarReservaComTokenInvalido(int id, JSONObject payload){
         return given()
                 .header("Content-Type", "application/json")
